@@ -1,0 +1,84 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "open5gs_5gc",
+      "type": "shell",
+      "command": "docker exec -it open5gs_5gc bash",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "group": "dev",
+        "reveal": "always"
+      },
+      "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    },
+    {
+      "label": "GNU radio flowgraph",
+      "type": "shell",
+      "command": "docker exec -it srsran_gnb bash -lc \"python3 2ue-zmq-mode-23.04Mhz-nogui.py; exec bash\"",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "group": "dev",
+        "reveal": "always"
+      },
+      "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    },
+    {
+      "label": "RAN",
+      "type": "shell",
+      "command": "docker exec -it srsran_gnb bash -lc \"bash run_gnb_multi_ue.sh; exec bash\"",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "group": "dev",
+        "reveal": "always"
+      },
+      "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    },
+    {
+      "label": "RUN UEs",
+      "type": "shell",
+      "command": "docker exec -it srsran_gnb bash -lc \"ip netns del ue1 && ip netns add ue1 && ip netns del ue2 && ip netns add ue2 && bash run2ue-zmq-mode.sh; exec bash\"",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "group": "dev",
+        "reveal": "always"
+      },
+      "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    },
+    {
+      "label": "iperf server",
+      "type": "shell",
+      // The sleep command is to give time for the network namespaces to be created before starting the iperf server.
+      "command": "docker exec -it srsran_gnb bash -lc \"cd traffic-generator && sleep 5 && bash iperf_server_2ues.sh; exec bash\"",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "group": "dev",
+        "reveal": "always"
+      },
+      "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    },
+    // {
+    //   "label": "REDIS server",
+    //   "type": "shell",
+    //   "command": "docker exec -it srsran_gnb bash -lc \"redis-server\"",
+    //   "problemMatcher": [],
+    //   "presentation": {
+    //     "panel": "dedicated",
+    //     "group": "dev",
+    //     "reveal": "always"
+    //   },
+    //   "options": { "cwd": "/data1/jcarleton/EdgeRIC-on-5G/docker" }
+    // },
+    // Runs all the above with one command:
+    {
+      "label": "Dev: all",
+      "dependsOn": ["open5gs_5gc", "GNU radio flowgraph", "RAN", "RUN UEs", "iperf server"],
+      "dependsOrder": "parallel"
+    }
+  ]
+}

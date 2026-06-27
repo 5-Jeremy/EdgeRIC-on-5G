@@ -4,8 +4,8 @@
 #   sudo ./gnb -c gnb_zmq.yaml
 
 amf:
-  addr: 127.0.0.100                  # The address or hostname of the AMF.
-  bind_addr: 127.0.0.1           # A local IP that the gNB binds to for traffic from the AMF.
+  addr: 10.53.1.2                   # The address or hostname of the AMF.
+  bind_addr: 10.53.1.3             # A local IP that the gNB binds to for traffic from the AMF.
 
 ru_sdr:
   device_driver: zmq                # The RF driver name.
@@ -44,3 +44,8 @@ pcap:
   mac_filename: /tmp/gnb_mac.pcap   # Path where the MAC PCAP is stored.
   ngap_enable: false                # Set to true to enable NGAP PCAPs.
   ngap_filename: /tmp/gnb_ngap.pcap # Path where the NGAP PCAP is stored.
+
+metrics:
+  enable_json_metrics: true
+  addr: 172.19.1.4  # Metrics-server IP
+  port: 55555       # Metrics-server Port
